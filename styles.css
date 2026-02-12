@@ -25,6 +25,12 @@
   --radius-sm: 10px;
   --radius-md: 14px;
   --radius-lg: 16px;
+
+  --hero-pad-top: 128px;
+  --hero-pad-bottom: 56px;
+  --section-pad-top: 64px;
+  --nav-cta-min-height: 44px;
+  --nav-cta-pad-x: 24px;
 }
 
 * {
@@ -165,26 +171,27 @@ nav {
 
 .nav-cta {
   display: inline-flex;
+  align-self: center;
   align-items: center;
   justify-content: center;
-  min-height: 40px;
-  padding: 0 20px;
+  min-height: var(--nav-cta-min-height);
+  padding: 0 var(--nav-cta-pad-x);
   background: var(--dark);
   color: #fff;
   border: 1px solid rgba(15, 23, 42, 0.9);
   border-radius: 8px;
   font-size: 14px;
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1;
   white-space: nowrap;
-  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.16);
+  box-shadow: 0 3px 8px rgba(15, 23, 42, 0.14);
   transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .nav-cta:hover {
   background: #1e293b;
   transform: translateY(-1px);
-  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.22);
+  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.2);
 }
 
 .nav-cta:active {
@@ -193,7 +200,7 @@ nav {
 
 /* Hero */
 .hero {
-  padding: 128px 24px 72px;
+  padding: var(--hero-pad-top) 24px var(--hero-pad-bottom);
   text-align: center;
   background-image: linear-gradient(180deg, var(--soft) 0%, var(--bg) 100%),
     radial-gradient(circle at 1px 1px, rgba(15, 23, 42, 0.06) 1px, transparent 0);
@@ -399,9 +406,13 @@ h1 {
 
 /* Sections */
 .section {
-  padding: 80px 24px 96px;
+  padding: var(--section-pad-top) 24px 96px;
   max-width: 1100px;
   margin: 0 auto;
+}
+
+#features {
+  border-top: 1px solid rgba(148, 163, 184, 0.24);
 }
 
 .section-header {
@@ -712,6 +723,10 @@ footer {
 
 /* Mid-width polish */
 @media (max-width: 900px) {
+  :root {
+    --nav-cta-pad-x: 20px;
+  }
+
   .nav-inner {
     padding: 0 18px;
     height: 66px;
@@ -726,14 +741,10 @@ footer {
     font-size: 13px;
   }
 
-  .nav-cta {
-    padding: 0 16px;
-  }
-
   .section,
   .product-section {
-    padding-top: 82px;
-    padding-bottom: 88px;
+    padding-top: 72px;
+    padding-bottom: 84px;
   }
 
   .section-header {
@@ -753,6 +764,13 @@ footer {
 
 /* Mobile: keep GitHub + Contact visible */
 @media (max-width: 640px) {
+  :root {
+    --hero-pad-top: 112px;
+    --hero-pad-bottom: 48px;
+    --section-pad-top: 56px;
+    --nav-cta-pad-x: 18px;
+  }
+
   .nav-links a {
     display: none;
   }
@@ -765,16 +783,8 @@ footer {
     display: inline-flex;
   }
 
-  .hero {
-    padding: 112px 24px 54px;
-  }
-
   h1 {
     font-size: clamp(32px, 10vw, 44px);
-  }
-
-  .section {
-    padding-top: 64px;
   }
 
   .hero-sub,
