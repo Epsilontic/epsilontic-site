@@ -1,0 +1,807 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Epsilontic — Contract-first training reliability</title>
+    <meta
+      name="description"
+      content="Epsilontic builds contract-first epistemic infrastructure for reliable AI training. Veriscope emits auditable capsule bundles (JSON + reports) with validate/report/diff workflows and explicit comparability gates."
+    />
+
+    <!-- Favicon: inline SVG ε mark -->
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="%230f172a"/><stop offset="1" stop-color="%231e293b"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(%23g)"/><text x="32" y="42" text-anchor="middle" font-family="Inter,system-ui,-apple-system,sans-serif" font-size="28" font-weight="700" fill="white">ε</text></svg>'
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --fg: #0f172a;
+        --muted: #64748b;
+        --line: #e2e8f0;
+        --bg: #ffffff;
+        --soft: #f8fafc;
+        --dark: #0f172a;
+
+        /* Subtle accent */
+        --accent: #3b82f6;
+        --accent-strong: #2563eb;
+        --accent-soft: #eff6ff;
+
+        --gradient-start: #0f172a;
+        --gradient-end: #1e293b;
+      }
+
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html { scroll-behavior: smooth; }
+      body {
+        background: var(--bg);
+        color: var(--fg);
+        font-family: "Inter", system-ui, -apple-system, sans-serif;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+      a { color: inherit; text-decoration: none; }
+      code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+
+      a:focus-visible,
+      .btn:focus-visible,
+      .nav-cta:focus-visible {
+        outline: 2px solid var(--fg);
+        outline-offset: 3px;
+      }
+      section { scroll-margin-top: 80px; }
+
+      /* Navigation */
+      nav {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--line);
+        z-index: 100;
+      }
+      .nav-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 24px;
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+      }
+      .logo {
+        font-weight: 700;
+        font-size: 20px;
+        letter-spacing: -0.02em;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .logo-mark {
+        width: 32px;
+        height: 32px;
+        background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 22px;
+        max-width: 740px;
+        flex-wrap: nowrap;
+      }
+      .nav-links a {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--muted);
+        transition: color 0.2s;
+      }
+      .nav-links a:hover { color: var(--fg); }
+      .nav-cta {
+        padding: 9px 16px;
+        background: var(--dark);
+        color: #fff;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        transition: background 0.2s, transform 0.2s;
+      }
+      .nav-cta:hover { background: #1e293b; transform: translateY(-1px); }
+
+      /* Hero */
+      .hero {
+        padding: 120px 24px 76px;
+        text-align: center;
+        background-image:
+          linear-gradient(180deg, var(--soft) 0%, var(--bg) 100%),
+          radial-gradient(circle at 1px 1px, rgba(15, 23, 42, 0.06) 1px, transparent 0);
+        background-size: 100% 100%, 24px 24px;
+      }
+      .hero-inner {
+        max-width: 860px;
+        margin: 0 auto;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 14px 6px 8px;
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 100px;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--muted);
+        margin-bottom: 22px;
+      }
+      .badge-dot {
+        width: 8px;
+        height: 8px;
+        background: var(--accent);
+        border-radius: 50%;
+      }
+      h1 {
+        font-size: clamp(32px, 5vw, 52px);
+        font-weight: 700;
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+        margin-bottom: 16px;
+      }
+      .hero-sub {
+        font-size: 18px;
+        color: var(--muted);
+        max-width: 700px;
+        margin: 0 auto 26px;
+        line-height: 1.7;
+      }
+      .hero-footnote {
+        font-size: 13px;
+        color: var(--muted);
+        opacity: 0.75;
+        margin-top: 16px;
+      }
+      .hero-ctas {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 18px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 14px 24px;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 600;
+        transition: all 0.2s;
+      }
+      .btn-primary {
+        background: var(--accent);
+        color: #fff;
+      }
+      .btn-primary:hover {
+        background: var(--accent-strong);
+        transform: translateY(-1px);
+      }
+      .btn-secondary {
+        background: #fff;
+        border: 1px solid var(--line);
+        color: var(--fg);
+      }
+      .btn-secondary:hover {
+        border-color: var(--muted);
+        background: var(--soft);
+        transform: translateY(-1px);
+      }
+
+      /* Shared terminal / code-block styles */
+      .terminal {
+        max-width: 740px;
+        margin: 0 auto;
+        text-align: left;
+        background: #0b1220;
+        border: 1px solid rgba(226, 232, 240, 0.18);
+        border-radius: 14px;
+        box-shadow: 0 12px 40px rgba(15, 23, 42, 0.10);
+        overflow: hidden;
+      }
+      .terminal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 10px 14px;
+        background: rgba(15, 23, 42, 0.45);
+        border-bottom: 1px solid rgba(226, 232, 240, 0.12);
+      }
+      .code-header { display: flex; gap: 6px; }
+      .code-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+      .code-dot:nth-child(1) { background: #ef4444; }
+      .code-dot:nth-child(2) { background: #eab308; }
+      .code-dot:nth-child(3) { background: #22c55e; }
+      .terminal-title {
+        font-size: 12px;
+        color: rgba(226, 232, 240, 0.78);
+        font-weight: 500;
+      }
+      .terminal pre {
+        margin: 0;
+        padding: 16px 18px 18px;
+        font-size: 13px;
+        line-height: 1.6;
+        color: #e2e8f0;
+        overflow: auto;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      }
+
+      /* Terminal syntax classes (used in both blocks) */
+      .t-comment { color: rgba(148, 163, 184, 0.75); }
+      .t-cmd { color: #93c5fd; }
+      .t-flag { color: #a5b4fc; }
+      .t-path { color: #4ade80; }
+      .t-prompt { color: rgba(226, 232, 240, 0.70); }
+
+      /* Sections */
+      .section {
+        padding: 84px 24px;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+      .section-header { text-align: center; margin-bottom: 48px; }
+      .section-title {
+        font-size: clamp(26px, 4vw, 36px);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin-bottom: 14px;
+      }
+      .section-desc {
+        font-size: 17px;
+        color: var(--muted);
+        max-width: 660px;
+        margin: 0 auto;
+      }
+
+      /* Features grid */
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+      }
+      .feature-card {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 24px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
+      }
+      .feature-card:hover {
+        box-shadow: 0 8px 30px rgba(59, 130, 246, 0.10);
+        border-color: var(--accent);
+        transform: translateY(-2px);
+      }
+      .feature-icon {
+        width: 44px;
+        height: 44px;
+        background: var(--soft);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 16px;
+        color: var(--fg);
+      }
+      .feature-icon svg { width: 20px; height: 20px; stroke: currentColor; }
+
+      .feature-card h3 {
+        font-size: 17px;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+      .feature-card p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+      /* Product Section */
+      .product-section {
+        background: var(--soft);
+        padding: 84px 24px;
+      }
+      .product-inner { max-width: 1100px; margin: 0 auto; }
+
+      .product-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+        align-items: center;
+      }
+      @media (max-width: 768px) { .product-grid { grid-template-columns: 1fr; } }
+
+      .product-content h2 {
+        font-size: 28px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin-bottom: 14px;
+      }
+      .product-content > p {
+        font-size: 16px;
+        color: var(--muted);
+        margin-bottom: 20px;
+        line-height: 1.7;
+      }
+      .product-list { list-style: none; }
+      .product-list li {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 12px;
+        font-size: 15px;
+        color: var(--fg);
+      }
+      .check-icon {
+        width: 20px;
+        height: 20px;
+        background: var(--accent-soft);
+        color: var(--accent-strong);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        margin-top: 2px;
+      }
+      .check-icon svg { width: 12px; height: 12px; stroke: currentColor; }
+
+      /* Specs */
+      .specs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 14px;
+        margin-top: 32px;
+      }
+      .spec-item {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 18px;
+        text-align: center;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      }
+      .spec-value { font-size: 18px; font-weight: 700; color: var(--fg); margin-bottom: 4px; }
+      .spec-label { font-size: 12px; color: var(--muted); }
+
+      /* CTA */
+      .cta-section {
+        background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+        padding: 72px 24px;
+        text-align: center;
+        color: #fff;
+      }
+      .cta-inner { max-width: 560px; margin: 0 auto; }
+      .cta-section h2 {
+        font-size: clamp(24px, 4vw, 32px);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin-bottom: 14px;
+      }
+      .cta-section p { font-size: 16px; opacity: 0.85; margin-bottom: 28px; }
+
+      .cta-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+      .btn-white { background: #fff; color: var(--dark); }
+      .btn-white:hover { background: #f1f5f9; transform: translateY(-1px); }
+      .btn-outline {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: #fff;
+      }
+      .btn-outline:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.5);
+        transform: translateY(-1px);
+      }
+
+      /* Footer */
+      footer {
+        background: var(--soft);
+        padding: 40px 24px;
+        border-top: 1px solid var(--line);
+      }
+      .footer-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 32px;
+      }
+      .footer-brand { max-width: 320px; }
+      .footer-brand .logo { margin-bottom: 10px; }
+      .footer-brand p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+      .footer-links { display: flex; gap: 48px; flex-wrap: wrap; }
+      .footer-col h4 {
+        font-size: 13px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 14px;
+        color: var(--fg);
+      }
+      .footer-col a {
+        display: block;
+        font-size: 14px;
+        color: var(--muted);
+        margin-bottom: 10px;
+        transition: color 0.2s;
+      }
+      .footer-col a:hover { color: var(--fg); }
+      .footer-bottom {
+        max-width: 1100px;
+        margin: 28px auto 0;
+        padding-top: 20px;
+        border-top: 1px solid var(--line);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      /* Mid-width polish */
+      @media (max-width: 900px) {
+        .nav-inner { padding: 0 18px; }
+        .nav-links { gap: 18px; max-width: 560px; }
+        .nav-links a { font-size: 13px; }
+        .nav-cta { padding: 8px 14px; }
+      }
+
+      /* Mobile: keep GitHub + Contact visible */
+      @media (max-width: 640px) {
+        .nav-links a { display: none; }
+        .nav-links a.nav-github,
+        .nav-links a.nav-cta { display: inline-block; }
+        .hero { padding: 112px 24px 64px; }
+      }
+
+      /* Entrance animation */
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(16px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .hero-inner > * { animation: fadeUp 0.6s ease-out both; }
+      .hero-inner > *:nth-child(1) { animation-delay: 0.05s; }
+      .hero-inner > *:nth-child(2) { animation-delay: 0.12s; }
+      .hero-inner > *:nth-child(3) { animation-delay: 0.19s; }
+      .hero-inner > *:nth-child(4) { animation-delay: 0.26s; }
+      .hero-inner > *:nth-child(5) { animation-delay: 0.33s; }
+
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        .feature-card, .btn, .nav-links a, .nav-cta { transition: none; }
+        .feature-card:hover { transform: none; }
+        .hero-inner > * { animation: none; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav>
+      <div class="nav-inner">
+        <a href="#top" class="logo">
+          <div class="logo-mark">ε</div> Epsilontic
+        </a>
+        <div class="nav-links">
+          <a href="#product">Product</a>
+          <a href="#features">Contract</a>
+          <a href="https://github.com/Epsilontic/veriscope" class="nav-github" target="_blank" rel="noopener">GitHub</a>
+          <a href="mailto:founder@epsilontic.com" class="nav-cta">Contact</a>
+        </div>
+      </div>
+    </nav>
+
+    <section class="hero" id="top">
+      <div class="hero-inner">
+        <div class="badge"><span class="badge-dot"></span> Open-source — Veriscope (AGPL + Commercial)</div>
+
+        <h1>Contract-first training reliability</h1>
+
+        <p class="hero-sub">
+          Veriscope is a CLI-first training monitor that emits auditable capsule bundles (JSON + reports) and enforces
+          comparability gates for cross-run diffs—an artifact contract for go/no-go training decisions, not another dashboard.
+        </p>
+
+        <div class="hero-ctas">
+          <a href="https://github.com/Epsilontic/veriscope#quick-start" class="btn btn-primary" target="_blank" rel="noopener">
+            Quick Start
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14m-7-7l7 7-7 7" />
+            </svg>
+          </a>
+          <a href="https://github.com/Epsilontic/veriscope/tree/main/docs/pilot" class="btn btn-secondary" target="_blank" rel="noopener">
+            Pilot kit docs
+          </a>
+        </div>
+
+        <!-- Hero terminal: teaser (3 commands) -->
+        <div class="terminal" aria-label="Veriscope CLI preview">
+          <div class="terminal-header">
+            <div class="code-header" aria-hidden="true">
+              <span class="code-dot"></span><span class="code-dot"></span><span class="code-dot"></span>
+            </div>
+            <div class="terminal-title">veriscope — quick preview</div>
+          </div>
+          <pre><code><span class="t-comment"># Run monitored training (runner wrapper)</span>
+<span class="t-prompt">$</span> <span class="t-cmd">veriscope</span> <span class="t-cmd">run</span> <span class="t-cmd">gpt</span> <span class="t-flag">--outdir</span> <span class="t-path">run_01</span> <span class="t-prompt">--</span> <span class="t-flag">--dataset</span> <span class="t-path">tiny</span> <span class="t-flag">--seed</span> <span class="t-path">123</span>
+
+<span class="t-comment"># Validate the capsule bundle</span>
+<span class="t-prompt">$</span> <span class="t-cmd">veriscope</span> <span class="t-cmd">validate</span> <span class="t-path">run_01</span>
+
+<span class="t-comment"># Diff two runs only when comparable under contract</span>
+<span class="t-prompt">$</span> <span class="t-cmd">veriscope</span> <span class="t-cmd">diff</span> <span class="t-path">run_01</span> <span class="t-path">run_02</span></code></pre>
+        </div>
+
+        <div class="hero-footnote">
+          Scoped to an explicit window signature and calibration protocol; comparisons are gated by a contract-defined comparability predicate.
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="features">
+      <div class="section-header">
+        <h2 class="section-title">A capsule contract, not a dashboard</h2>
+        <p class="section-desc">
+          Veriscope’s core output is a capsule bundle you can validate, report, and diff. Comparisons are only allowed when runs are
+          comparable under the contract (non-partial, matching recomputed window-signature hash, matching preset identity, and governance checks in compare workflows).
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon" aria-hidden="true">
+            <!-- file-text -->
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/>
+              <path d="M14 2v6h6"/>
+              <path d="M16 13H8"/>
+              <path d="M16 17H8"/>
+              <path d="M10 9H8"/>
+            </svg>
+          </div>
+          <h3>Auditable capsule bundles</h3>
+          <p>
+            Standard outputs: <code>window_signature.json</code>, <code>results.json</code>, <code>results_summary.json</code>, plus optional governance/provenance artifacts.
+            Machine-verifiable and shareable.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon" aria-hidden="true">
+            <!-- search -->
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="M21 21l-4.3-4.3"></path>
+            </svg>
+          </div>
+          <h3>Validate / Report / Inspect</h3>
+          <p>
+            Contract-aligned CLI workflows: validate capsule integrity, generate reports (text/markdown), and inspect key fields without trusting embedded hashes.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon" aria-hidden="true">
+            <!-- git-compare -->
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="18" cy="18" r="2"></circle>
+              <circle cx="6" cy="6" r="2"></circle>
+              <path d="M6 8v8a4 4 0 0 0 4 4h6"></path>
+              <path d="M18 16V8a4 4 0 0 0-4-4H8"></path>
+            </svg>
+          </div>
+          <h3>Diffs gated by comparability</h3>
+          <p>
+            Cross-run diffs are only allowed when runs are comparable under contract: non-partial, matching recomputed window-signature hash,
+            preset identity, and governance integrity checks in compare workflows.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon" aria-hidden="true">
+            <!-- shield-check -->
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2l7 4v6c0 5-3 9-7 10-4-1-7-5-7-10V6z"></path>
+              <path d="M9 12l2 2 4-4"></path>
+            </svg>
+          </div>
+          <h3>Governance without mutation</h3>
+          <p>
+            Record manual judgements and notes as overlays (append-only governance logs) without altering raw artifacts.
+            “What happened” and “what we decided” remain separable and auditable.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon" aria-hidden="true">
+            <!-- flask-conical -->
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 2v6l-5.5 9.5A3 3 0 0 0 7.1 22h9.8a3 3 0 0 0 2.6-4.5L14 8V2"></path>
+              <path d="M8.5 16h7"></path>
+            </svg>
+          </div>
+          <h3>Window-scoped calibration</h3>
+          <p>
+            Calibration emits a report artifact (FAR/delay/overhead + constraint checks) and either a preset candidate or explicit rejection.
+            Validity is scoped to a specific window-signature hash.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon" aria-hidden="true">
+            <!-- rocket -->
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4.5 16.5c-1.5 1.5-2 5-2 5s3.5-.5 5-2"></path>
+              <path d="M10 14l-2 2"></path>
+              <path d="M13 7c3-3 7.5-3 9-2 1 1.5 1 6-2 9-2.5 2.5-8 7-12 7-1.5 0-3-1.5-3-3 0-4.5 4.5-9.5 7-12z"></path>
+            </svg>
+          </div>
+          <h3>Runners + pilot kit</h3>
+          <p>
+            CLI runners for CIFAR (PyTorch), GPT (nanoGPT), and HF (Transformers), plus a pilot harness for control vs injected-pathology runs with shareable outputs.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="product-section" id="product">
+      <div class="product-inner">
+        <div class="product-grid">
+          <div class="product-content">
+            <h2>The full workflow</h2>
+            <p>
+              Declare a window signature, run alongside training, emit capsule artifacts, validate them, then report and diff only when the contract says it’s legitimate.
+              Governance overlays keep manual judgements auditable without mutating raw outputs.
+            </p>
+            <ul class="product-list">
+              <li>
+                <span class="check-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
+                </span>
+                <span><strong>Decisions live in artifacts</strong> (pass/warn/fail/skip), not only in exit codes</span>
+              </li>
+              <li>
+                <span class="check-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
+                </span>
+                <span><strong>Comparability gates</strong> prevent “silent drift” comparisons</span>
+              </li>
+              <li>
+                <span class="check-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
+                </span>
+                <span><strong>Governance overlays</strong> preserve raw artifacts (no mutation)</span>
+              </li>
+              <li>
+                <span class="check-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
+                </span>
+                <span><strong>Calibration protocol</strong> produces a report artifact + preset candidate/rejection</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Product terminal: reference (full 5 steps) -->
+          <div class="terminal" aria-label="Veriscope full capsule workflow">
+            <div class="terminal-header">
+              <div class="code-header" aria-hidden="true">
+                <span class="code-dot"></span><span class="code-dot"></span><span class="code-dot"></span>
+              </div>
+              <div class="terminal-title">veriscope — full workflow</div>
+            </div>
+            <pre><code><span class="t-comment"># 1) Run a monitored training job (runner wrappers)</span>
+<span class="t-prompt">$</span> <span class="t-cmd">veriscope</span> <span class="t-cmd">run</span> <span class="t-cmd">gpt</span> <span class="t-flag">--outdir</span> <span class="t-path">OUTDIR</span> <span class="t-prompt">--</span> <span class="t-flag">--dataset</span> <span class="t-path">tiny</span> <span class="t-flag">--seed</span> <span class="t-path">123</span>
+
+<span class="t-comment"># 2) Validate the capsule bundle</span>
+<span class="t-prompt">$</span> <span class="t-cmd">veriscope</span> <span class="t-cmd">validate</span> <span class="t-path">OUTDIR</span>
+
+<span class="t-comment"># 3) Produce a shareable report</span>
+<span class="t-prompt">$</span> <span class="t-cmd">veriscope</span> <span class="t-cmd">report</span> <span class="t-path">OUTDIR</span> <span class="t-flag">--format</span> <span class="t-path">md</span> <span class="t-prompt">&gt;</span> <span class="t-path">report.md</span>
+
+<span class="t-comment"># 4) Diff two runs only when comparable under contract</span>
+<span class="t-prompt">$</span> <span class="t-cmd">veriscope</span> <span class="t-cmd">diff</span> <span class="t-path">OUTDIR_A</span> <span class="t-path">OUTDIR_B</span>
+
+<span class="t-comment"># 5) Record a manual judgement without mutating raw artifacts</span>
+<span class="t-prompt">$</span> <span class="t-cmd">veriscope</span> <span class="t-cmd">override</span> <span class="t-path">OUTDIR</span> <span class="t-flag">--status</span> <span class="t-path">pass</span> <span class="t-flag">--reason</span> <span class="t-path">"Known infra noise"</span></code></pre>
+          </div>
+        </div>
+
+        <div class="specs-grid">
+          <div class="spec-item">
+            <div class="spec-value">Python 3.9+</div>
+            <div class="spec-label">Runtime</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-value">CLI-first</div>
+            <div class="spec-label">Run · Validate · Report · Diff</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-value">CPU & GPU</div>
+            <div class="spec-label">Local + cloud</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-value">Dual license</div>
+            <div class="spec-label">AGPL-3.0 + Commercial</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <div class="cta-inner">
+        <h2>Run Veriscope in a pilot</h2>
+        <p>
+          Produce verifiable artifacts, gate cross-run diffs by contract, and score FAR/delay/overhead when control + injected runs are available.
+        </p>
+        <div class="cta-buttons">
+          <a href="https://github.com/Epsilontic/veriscope#quick-start" class="btn btn-white" target="_blank" rel="noopener">Quick Start</a>
+          <a href="https://github.com/Epsilontic/veriscope/blob/main/docs/contract_v1.md" class="btn btn-outline" target="_blank" rel="noopener">Read the contract</a>
+          <a href="mailto:founder@epsilontic.com" class="btn btn-outline">Get in touch</a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <a href="#top" class="logo">
+            <div class="logo-mark">ε</div> Epsilontic
+          </a>
+          <p>Contract-first epistemic infrastructure for reliable AI training.</p>
+        </div>
+
+        <div class="footer-links">
+          <div class="footer-col">
+            <h4>Veriscope</h4>
+            <a href="https://github.com/Epsilontic/veriscope" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://github.com/Epsilontic/veriscope#quick-start" target="_blank" rel="noopener">Quick Start</a>
+            <a href="https://github.com/Epsilontic/veriscope/blob/main/docs/contract_v1.md" target="_blank" rel="noopener">Capsule contract (v1)</a>
+            <a href="https://github.com/Epsilontic/veriscope/tree/main/docs/pilot" target="_blank" rel="noopener">Pilot kit</a>
+            <a href="https://github.com/Epsilontic/veriscope/blob/main/docs/calibration_protocol_v0.md" target="_blank" rel="noopener">Calibration protocol</a>
+          </div>
+          <div class="footer-col">
+            <h4>Contact</h4>
+            <a href="mailto:founder@epsilontic.com">founder@epsilontic.com</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2025 Epsilontic</span>
+        <span>AGPL-3.0 · Commercial licensing available</span>
+      </div>
+    </footer>
+  </body>
+</html>
