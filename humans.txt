@@ -1,0 +1,5 @@
+Epsilontic
+Founder: Craig Holmander
+Contact: founder@epsilontic.com
+Location: USA
+Stack: Static HTML + CSS, Cloudflare Pages
