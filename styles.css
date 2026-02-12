@@ -1,4 +1,4 @@
-/* epsilontic.com site styles */
+/* Canonical stylesheet entrypoint: loaded from /index.html via <link rel="stylesheet" href="/styles.css">. */
 
 :root {
   --fg: #0f172a;
@@ -15,6 +15,8 @@
 
   --gradient-start: #0f172a;
   --gradient-end: #1e293b;
+  --focus-ring: #0f172a;
+  --focus-ring-on-dark: #f8fafc;
 
   --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06), 0 6px 16px rgba(15, 23, 42, 0.04);
   --shadow-md: 0 10px 28px rgba(15, 23, 42, 0.1), 0 2px 6px rgba(15, 23, 42, 0.06);
@@ -56,8 +58,14 @@ code {
 a:focus-visible,
 .btn:focus-visible,
 .nav-cta:focus-visible {
-  outline: 2px solid var(--fg);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 3px;
+}
+
+.btn-primary:focus-visible,
+.btn-outline:focus-visible,
+.nav-cta:focus-visible {
+  outline-color: var(--focus-ring-on-dark);
 }
 
 section {
@@ -156,13 +164,19 @@ nav {
 }
 
 .nav-cta {
-  padding: 9px 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 20px;
   background: var(--dark);
   color: #fff;
   border: 1px solid rgba(15, 23, 42, 0.9);
   border-radius: 8px;
   font-size: 14px;
   font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
   box-shadow: 0 8px 18px rgba(15, 23, 42, 0.16);
   transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -173,9 +187,13 @@ nav {
   box-shadow: 0 10px 22px rgba(15, 23, 42, 0.22);
 }
 
+.nav-cta:active {
+  transform: translateY(0);
+}
+
 /* Hero */
 .hero {
-  padding: 132px 24px 88px;
+  padding: 128px 24px 72px;
   text-align: center;
   background-image: linear-gradient(180deg, var(--soft) 0%, var(--bg) 100%),
     radial-gradient(circle at 1px 1px, rgba(15, 23, 42, 0.06) 1px, transparent 0);
@@ -381,7 +399,7 @@ h1 {
 
 /* Sections */
 .section {
-  padding: 96px 24px;
+  padding: 80px 24px 96px;
   max-width: 1100px;
   margin: 0 auto;
 }
@@ -414,18 +432,18 @@ h1 {
 }
 
 .feature-card {
-  background: linear-gradient(180deg, #ffffff 0%, #ffffff 72%, #fbfdff 100%);
-  border: 1px solid var(--line);
+  background: linear-gradient(180deg, #ffffff 0%, #ffffff 70%, #fbfdff 100%);
+  border: 1px solid rgba(148, 163, 184, 0.3);
   border-radius: var(--radius-md);
   padding: 26px;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05), 0 7px 18px rgba(15, 23, 42, 0.04);
   transition: box-shadow 0.25s ease, transform 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
 }
 
 .feature-card:hover {
-  box-shadow: var(--shadow-md);
-  border-color: rgba(59, 130, 246, 0.55);
-  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.09), 0 4px 10px rgba(59, 130, 246, 0.08);
+  border-color: rgba(59, 130, 246, 0.45);
+  transform: translateY(-2px);
 }
 
 .feature-card:active {
@@ -434,7 +452,7 @@ h1 {
 
 .feature-card:focus-within {
   border-color: rgba(59, 130, 246, 0.65);
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.09), 0 4px 10px rgba(59, 130, 246, 0.08);
 }
 
 .feature-icon {
@@ -709,12 +727,12 @@ footer {
   }
 
   .nav-cta {
-    padding: 8px 14px;
+    padding: 0 16px;
   }
 
   .section,
   .product-section {
-    padding-top: 88px;
+    padding-top: 82px;
     padding-bottom: 88px;
   }
 
@@ -739,17 +757,24 @@ footer {
     display: none;
   }
 
-  .nav-links a.nav-github,
-  .nav-links a.nav-cta {
+  .nav-links a.nav-github {
     display: inline-block;
   }
 
+  .nav-links a.nav-cta {
+    display: inline-flex;
+  }
+
   .hero {
-    padding: 118px 24px 68px;
+    padding: 112px 24px 54px;
   }
 
   h1 {
     font-size: clamp(32px, 10vw, 44px);
+  }
+
+  .section {
+    padding-top: 64px;
   }
 
   .hero-sub,
