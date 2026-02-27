@@ -1,5 +1,8 @@
 /*
-  Content-Security-Policy: default-src 'none'; base-uri 'none'; frame-ancestors 'none'; object-src 'none'; script-src 'self' https://static.cloudflareinsights.com; script-src-attr 'none'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src https://cloudflareinsights.com; media-src 'none'; manifest-src 'none'; worker-src 'none'; child-src 'none'; frame-src 'none'; form-action 'none'
+  Content-Security-Policy: default-src 'none'; base-uri 'none'; frame-ancestors 'none'; object-src 'none'; script-src https://static.cloudflareinsights.com; script-src-attr 'none'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src https://cloudflareinsights.com; media-src 'none'; manifest-src 'none'; worker-src 'none'; child-src 'none'; frame-src 'none'; form-action 'none'
+  Strict-Transport-Security: max-age=63072000
   Referrer-Policy: no-referrer
   X-Content-Type-Options: nosniff
-  Permissions-Policy: geolocation=(), microphone=(), camera=()
+  X-Frame-Options: DENY
+  Cross-Origin-Opener-Policy: same-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=(), usb=(), midi=(), xr-spatial-tracking=(), magnetometer=(), gyroscope=(), interest-cohort=()
