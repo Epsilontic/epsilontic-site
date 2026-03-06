@@ -3,11 +3,33 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Epsilontic — Contract-first training reliability</title>
+    <title>Veriscope by Epsilontic | Contract-first training reliability</title>
     <meta
       name="description"
-      content="Epsilontic builds contract-first epistemic infrastructure for reliable AI training. Veriscope emits auditable capsule bundles (JSON + reports) with validate/report/diff workflows and explicit comparability gates."
+      content="Veriscope is Epsilontic's CLI-first monitor for auditable training runs. It emits capsule bundles, validates run artifacts, and gates cross-run comparison by comparability predicates."
     />
+    <meta
+      name="robots"
+      content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"
+    />
+    <meta name="theme-color" content="#0f172a" />
+    <link rel="canonical" href="https://epsilontic.com/" />
+    <meta property="og:title" content="Veriscope by Epsilontic" />
+    <meta
+      property="og:description"
+      content="CLI-first monitor for auditable training runs: emit capsule bundles, validate run artifacts, and gate cross-run comparison."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://epsilontic.com/" />
+    <meta property="og:site_name" content="Epsilontic" />
+    <meta property="og:image" content="https://epsilontic.com/og-image.png" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Veriscope by Epsilontic" />
+    <meta
+      name="twitter:description"
+      content="CLI-first monitor for auditable training runs, run-artifact validation, and comparability-gated diffs."
+    />
+    <meta name="twitter:image" content="https://epsilontic.com/og-image.png" />
 
     <!-- Favicon: inline SVG ε mark -->
     <link
@@ -19,59 +41,62 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/styles.css?v=20260212" />
   </head>
 
   <body>
-    <nav>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <nav aria-label="Primary">
       <div class="nav-inner">
         <a href="#top" class="logo">
           <div class="logo-mark">ε</div> Epsilontic
         </a>
         <div class="nav-links">
-          <a href="#product">Product</a>
-          <a href="#features">Contract</a>
-          <a href="https://github.com/Epsilontic/veriscope" class="nav-github" target="_blank" rel="noopener">GitHub</a>
+          <a href="#features">Features</a>
+          <a href="#product">Workflow</a>
+          <a href="https://github.com/Epsilontic/veriscope" class="nav-github" target="_blank" rel="noopener noreferrer">GitHub</a>
           <a href="mailto:founder@epsilontic.com" class="nav-cta">Contact</a>
         </div>
       </div>
     </nav>
 
-    <section class="hero" id="top">
-      <div class="hero-inner">
-        <div class="badge"><span class="badge-dot"></span> Open-source — Veriscope (AGPL + Commercial)</div>
+    <main id="main">
+      <section class="hero" id="top">
+        <div class="hero-inner">
+          <div class="badge"><span class="badge-dot"></span> Open-source CLI · Veriscope (AGPL-3.0 + Commercial)</div>
 
-        <h1>Contract-first training reliability</h1>
+          <h1>Veriscope is the CLI for auditable training runs</h1>
 
-        <p class="hero-sub">
-          Veriscope is a CLI-first training monitor that emits auditable capsule bundles (JSON + reports) and enforces
-          comparability gates for cross-run diffs—an artifact contract for go/no-go training decisions, not another dashboard.
-        </p>
+          <p class="hero-sub">
+            CLI-first training monitor for auditable capsule bundles: record runs, validate artifacts, and gate
+            cross-run diffs by explicit comparability predicates.
+          </p>
 
-        <div class="hero-ctas">
-          <a href="https://github.com/Epsilontic/veriscope#quick-start" class="btn btn-primary" target="_blank" rel="noopener">
-            Quick Start
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 12h14m-7-7l7 7-7 7" />
-            </svg>
-          </a>
-          <a href="https://github.com/Epsilontic/veriscope/tree/main/docs/pilot" class="btn btn-secondary" target="_blank" rel="noopener">
-            Pilot kit docs
-          </a>
-        </div>
-
-        <!-- Hero terminal: teaser (3 commands) -->
-        <div class="terminal" aria-label="Veriscope CLI preview">
-          <div class="terminal-header">
-            <div class="code-header" aria-hidden="true">
-              <span class="code-dot"></span><span class="code-dot"></span><span class="code-dot"></span>
-            </div>
-            <div class="terminal-title">veriscope — quick preview</div>
+          <div class="hero-ctas">
+            <a href="https://github.com/Epsilontic/veriscope#quick-start" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+              Open quick start
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14m-7-7l7 7-7 7" />
+              </svg>
+            </a>
+            <a href="https://github.com/Epsilontic/veriscope/blob/main/docs/contract_v1.md" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">
+              Read the contract
+            </a>
           </div>
-          <pre><code><span class="t-comment"># Run monitored training (runner wrapper)</span>
+
+          <!-- Hero terminal: teaser (3 commands) -->
+          <div class="terminal" aria-label="Veriscope CLI preview">
+            <div class="terminal-header">
+              <div class="code-header" aria-hidden="true">
+                <span class="code-dot"></span><span class="code-dot"></span><span class="code-dot"></span>
+              </div>
+              <div class="terminal-title">veriscope — quick preview</div>
+            </div>
+            <pre><code><span class="t-comment"># Run monitored training (runner wrapper)</span>
 <span class="t-prompt">$</span> <span class="t-cmd">veriscope</span> <span class="t-cmd">run</span> <span class="t-cmd">gpt</span> <span class="t-flag">--outdir</span> <span class="t-path">run_01</span> <span class="t-prompt">--</span> <span class="t-flag">--dataset</span> <span class="t-path">tiny</span> <span class="t-flag">--seed</span> <span class="t-path">123</span>
 
 <span class="t-comment"># Validate the capsule bundle</span>
@@ -79,166 +104,168 @@
 
 <span class="t-comment"># Diff two runs only when comparable under contract</span>
 <span class="t-prompt">$</span> <span class="t-cmd">veriscope</span> <span class="t-cmd">diff</span> <span class="t-path">run_01</span> <span class="t-path">run_02</span></code></pre>
-        </div>
-
-        <div class="hero-footnote">
-          Scoped to an explicit window signature and calibration protocol; comparisons are gated by a contract-defined comparability predicate.
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="features">
-      <div class="section-header">
-        <h2 class="section-title">A capsule contract, not a dashboard</h2>
-        <p class="section-desc">
-          Veriscope’s core output is a capsule bundle you can validate, report, and diff. Comparisons are only allowed when runs are
-          comparable under the contract (non-partial, matching recomputed window-signature hash, matching preset identity, and governance checks in compare workflows).
-        </p>
-      </div>
-
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon" aria-hidden="true">
-            <!-- file-text -->
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/>
-              <path d="M14 2v6h6"/>
-              <path d="M16 13H8"/>
-              <path d="M16 17H8"/>
-              <path d="M10 9H8"/>
-            </svg>
           </div>
-          <h3>Auditable capsule bundles</h3>
-          <p>
-            Standard outputs: <code>window_signature.json</code>, <code>results.json</code>, <code>results_summary.json</code>, plus optional governance/provenance artifacts.
-            Machine-verifiable and shareable.
+
+          <div class="hero-footnote">
+            Contract-first epistemic infrastructure for training runs whose comparisons must remain auditable.
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="features">
+        <div class="section-header">
+          <h2 class="section-title">An artifact contract, not a dashboard</h2>
+          <p class="section-desc">
+            Veriscope&apos;s core output is a capsule bundle you can validate, report, and diff. Comparisons are only
+            admitted when runs remain comparable under contract.
           </p>
         </div>
 
-        <div class="feature-card">
-          <div class="feature-icon" aria-hidden="true">
-            <!-- search -->
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="7"></circle>
-              <path d="M21 21l-4.3-4.3"></path>
-            </svg>
-          </div>
-          <h3>Validate / Report / Inspect</h3>
-          <p>
-            Contract-aligned CLI workflows: validate capsule integrity, generate reports (text/markdown), and inspect key fields without trusting embedded hashes.
-          </p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon" aria-hidden="true">
-            <!-- git-compare -->
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="18" cy="18" r="2"></circle>
-              <circle cx="6" cy="6" r="2"></circle>
-              <path d="M6 8v8a4 4 0 0 0 4 4h6"></path>
-              <path d="M18 16V8a4 4 0 0 0-4-4H8"></path>
-            </svg>
-          </div>
-          <h3>Diffs gated by comparability</h3>
-          <p>
-            Cross-run diffs are only allowed when runs are comparable under contract: non-partial, matching recomputed window-signature hash,
-            preset identity, and governance integrity checks in compare workflows.
-          </p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon" aria-hidden="true">
-            <!-- shield-check -->
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2l7 4v6c0 5-3 9-7 10-4-1-7-5-7-10V6z"></path>
-              <path d="M9 12l2 2 4-4"></path>
-            </svg>
-          </div>
-          <h3>Governance without mutation</h3>
-          <p>
-            Record manual judgements and notes as overlays (append-only governance logs) without altering raw artifacts.
-            “What happened” and “what we decided” remain separable and auditable.
-          </p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon" aria-hidden="true">
-            <!-- flask-conical -->
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M10 2v6l-5.5 9.5A3 3 0 0 0 7.1 22h9.8a3 3 0 0 0 2.6-4.5L14 8V2"></path>
-              <path d="M8.5 16h7"></path>
-            </svg>
-          </div>
-          <h3>Window-scoped calibration</h3>
-          <p>
-            Calibration emits a report artifact (FAR/delay/overhead + constraint checks) and either a preset candidate or explicit rejection.
-            Validity is scoped to a specific window-signature hash.
-          </p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon" aria-hidden="true">
-            <!-- rocket -->
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4.5 16.5c-1.5 1.5-2 5-2 5s3.5-.5 5-2"></path>
-              <path d="M10 14l-2 2"></path>
-              <path d="M13 7c3-3 7.5-3 9-2 1 1.5 1 6-2 9-2.5 2.5-8 7-12 7-1.5 0-3-1.5-3-3 0-4.5 4.5-9.5 7-12z"></path>
-            </svg>
-          </div>
-          <h3>Runners + pilot kit</h3>
-          <p>
-            CLI runners for CIFAR (PyTorch), GPT (nanoGPT), and HF (Transformers), plus a pilot harness for control vs injected-pathology runs with shareable outputs.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section class="product-section" id="product">
-      <div class="product-inner">
-        <div class="product-grid">
-          <div class="product-content">
-            <h2>The full workflow</h2>
-            <p>
-              Declare a window signature, run alongside training, emit capsule artifacts, validate them, then report and diff only when the contract says it’s legitimate.
-              Governance overlays keep manual judgements auditable without mutating raw outputs.
-            </p>
-            <ul class="product-list">
-              <li>
-                <span class="check-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
-                </span>
-                <span><strong>Decisions live in artifacts</strong> (pass/warn/fail/skip), not only in exit codes</span>
-              </li>
-              <li>
-                <span class="check-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
-                </span>
-                <span><strong>Comparability gates</strong> prevent “silent drift” comparisons</span>
-              </li>
-              <li>
-                <span class="check-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
-                </span>
-                <span><strong>Governance overlays</strong> preserve raw artifacts (no mutation)</span>
-              </li>
-              <li>
-                <span class="check-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
-                </span>
-                <span><strong>Calibration protocol</strong> produces a report artifact + preset candidate/rejection</span>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Product terminal: reference (full 5 steps) -->
-          <div class="terminal" aria-label="Veriscope full capsule workflow">
-            <div class="terminal-header">
-              <div class="code-header" aria-hidden="true">
-                <span class="code-dot"></span><span class="code-dot"></span><span class="code-dot"></span>
-              </div>
-              <div class="terminal-title">veriscope — full workflow</div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon" aria-hidden="true">
+              <!-- file-text -->
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/>
+                <path d="M14 2v6h6"/>
+                <path d="M16 13H8"/>
+                <path d="M16 17H8"/>
+                <path d="M10 9H8"/>
+              </svg>
             </div>
-            <pre><code><span class="t-comment"># 1) Run a monitored training job (runner wrappers)</span>
+            <h3>Auditable capsule bundles</h3>
+            <p>
+              Every run emits standard files such as <code>window_signature.json</code>, <code>results.json</code>, and
+              <code>results_summary.json</code>, plus optional governance and provenance artifacts.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon" aria-hidden="true">
+              <!-- search -->
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="7"></circle>
+                <path d="M21 21l-4.3-4.3"></path>
+              </svg>
+            </div>
+            <h3>Validate / Report / Inspect</h3>
+            <p>
+              Use the CLI to verify bundle integrity, inspect key fields, and generate text or Markdown reports without
+              trusting embedded hashes.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon" aria-hidden="true">
+              <!-- git-compare -->
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="18" cy="18" r="2"></circle>
+                <circle cx="6" cy="6" r="2"></circle>
+                <path d="M6 8v8a4 4 0 0 0 4 4h6"></path>
+                <path d="M18 16V8a4 4 0 0 0-4-4H8"></path>
+              </svg>
+            </div>
+            <h3>Diffs gated by comparability</h3>
+            <p>
+              Cross-run diffs are blocked unless the runs are non-partial and still match the same window signature,
+              preset identity, and compare-time governance checks.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon" aria-hidden="true">
+              <!-- shield-check -->
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2l7 4v6c0 5-3 9-7 10-4-1-7-5-7-10V6z"></path>
+                <path d="M9 12l2 2 4-4"></path>
+              </svg>
+            </div>
+            <h3>Governance without mutation</h3>
+            <p>
+              Record approvals and notes as append-only overlays without altering raw artifacts. What happened and what
+              your team decided stay separate and auditable.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon" aria-hidden="true">
+              <!-- flask-conical -->
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10 2v6l-5.5 9.5A3 3 0 0 0 7.1 22h9.8a3 3 0 0 0 2.6-4.5L14 8V2"></path>
+                <path d="M8.5 16h7"></path>
+              </svg>
+            </div>
+            <h3>Window-scoped calibration</h3>
+            <p>
+              Calibration emits FAR, delay, and overhead results together with either a preset candidate or an explicit
+              rejection, all scoped to one window-signature hash.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon" aria-hidden="true">
+              <!-- rocket -->
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4.5 16.5c-1.5 1.5-2 5-2 5s3.5-.5 5-2"></path>
+                <path d="M10 14l-2 2"></path>
+                <path d="M13 7c3-3 7.5-3 9-2 1 1.5 1 6-2 9-2.5 2.5-8 7-12 7-1.5 0-3-1.5-3-3 0-4.5 4.5-9.5 7-12z"></path>
+              </svg>
+            </div>
+            <h3>Runners + pilot kit</h3>
+            <p>
+              Start with runner wrappers for CIFAR, nanoGPT, and Hugging Face workflows, then use the pilot harness for
+              control versus injected-pathology runs with shareable outputs.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="product-section" id="product">
+        <div class="product-inner">
+          <div class="product-grid">
+            <div class="product-content">
+              <h2>From training run to decision record</h2>
+              <p>
+                Declare a window signature, run alongside training, emit capsule artifacts, validate them, then report and
+                diff only when the contract admits comparison. Governance overlays remain append-only.
+              </p>
+              <ul class="product-list">
+                <li>
+                  <span class="check-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
+                  </span>
+                  <span><strong>Decisions live in artifacts</strong> with pass, warn, fail, and skip states</span>
+                </li>
+                <li>
+                  <span class="check-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
+                  </span>
+                  <span><strong>Comparability gates</strong> prevent silent-drift comparisons</span>
+                </li>
+                <li>
+                  <span class="check-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
+                  </span>
+                  <span><strong>Governance overlays</strong> preserve raw artifacts without mutation</span>
+                </li>
+                <li>
+                  <span class="check-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
+                  </span>
+                  <span><strong>Calibration protocol</strong> remains scoped to the window that produced the preset</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Product terminal: reference (full 5 steps) -->
+            <div class="terminal" aria-label="Veriscope full capsule workflow">
+              <div class="terminal-header">
+                <div class="code-header" aria-hidden="true">
+                  <span class="code-dot"></span><span class="code-dot"></span><span class="code-dot"></span>
+                </div>
+                <div class="terminal-title">veriscope — full workflow</div>
+              </div>
+              <pre><code><span class="t-comment"># 1) Run a monitored training job (runner wrappers)</span>
 <span class="t-prompt">$</span> <span class="t-cmd">veriscope</span> <span class="t-cmd">run</span> <span class="t-cmd">gpt</span> <span class="t-flag">--outdir</span> <span class="t-path">OUTDIR</span> <span class="t-prompt">--</span> <span class="t-flag">--dataset</span> <span class="t-path">tiny</span> <span class="t-flag">--seed</span> <span class="t-path">123</span>
 
 <span class="t-comment"># 2) Validate the capsule bundle</span>
@@ -252,43 +279,45 @@
 
 <span class="t-comment"># 5) Record a manual judgement without mutating raw artifacts</span>
 <span class="t-prompt">$</span> <span class="t-cmd">veriscope</span> <span class="t-cmd">override</span> <span class="t-path">OUTDIR</span> <span class="t-flag">--status</span> <span class="t-path">pass</span> <span class="t-flag">--reason</span> <span class="t-path">"Known infra noise"</span></code></pre>
+            </div>
           </div>
-        </div>
 
-        <div class="specs-grid">
-          <div class="spec-item">
-            <div class="spec-value">Python 3.9+</div>
-            <div class="spec-label">Runtime</div>
-          </div>
-          <div class="spec-item">
-            <div class="spec-value">CLI-first</div>
-            <div class="spec-label">Run · Validate · Report · Diff</div>
-          </div>
-          <div class="spec-item">
-            <div class="spec-value">CPU & GPU</div>
-            <div class="spec-label">Local + cloud</div>
-          </div>
-          <div class="spec-item">
-            <div class="spec-value">Dual license</div>
-            <div class="spec-label">AGPL-3.0 + Commercial</div>
+          <div class="specs-grid">
+            <div class="spec-item">
+              <div class="spec-value">Python 3.9+</div>
+              <div class="spec-label">Runtime</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-value">CLI-first</div>
+              <div class="spec-label">Run · Validate · Report · Diff</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-value">CPU &amp; GPU</div>
+              <div class="spec-label">Local + cloud</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-value">Dual license</div>
+              <div class="spec-label">AGPL-3.0 + Commercial</div>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="cta-section">
-      <div class="cta-inner">
-        <h2>Run Veriscope in a pilot</h2>
-        <p>
-          Produce verifiable artifacts, gate cross-run diffs by contract, and score FAR/delay/overhead when control + injected runs are available.
-        </p>
-        <div class="cta-buttons">
-          <a href="https://github.com/Epsilontic/veriscope#quick-start" class="btn btn-white" target="_blank" rel="noopener">Quick Start</a>
-          <a href="https://github.com/Epsilontic/veriscope/blob/main/docs/contract_v1.md" class="btn btn-outline" target="_blank" rel="noopener">Read the contract</a>
-          <a href="mailto:founder@epsilontic.com" class="btn btn-outline">Get in touch</a>
+      <section class="cta-section">
+        <div class="cta-inner">
+          <h2>Run Veriscope in a pilot</h2>
+          <p>
+            Produce auditable artifacts, validate capsule integrity, and gate cross-run comparison under an explicit
+            artifact contract.
+          </p>
+          <div class="cta-buttons">
+            <a href="https://github.com/Epsilontic/veriscope#quick-start" class="btn btn-white" target="_blank" rel="noopener noreferrer">Open quick start</a>
+            <a href="https://github.com/Epsilontic/veriscope/tree/main/docs/pilot" class="btn btn-outline" target="_blank" rel="noopener noreferrer">Open pilot guide</a>
+            <a href="mailto:founder@epsilontic.com" class="btn btn-outline">Contact founder</a>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </main>
 
     <footer>
       <div class="footer-inner">
@@ -302,11 +331,11 @@
         <div class="footer-links">
           <div class="footer-col">
             <h4>Veriscope</h4>
-            <a href="https://github.com/Epsilontic/veriscope" target="_blank" rel="noopener">GitHub</a>
-            <a href="https://github.com/Epsilontic/veriscope#quick-start" target="_blank" rel="noopener">Quick Start</a>
-            <a href="https://github.com/Epsilontic/veriscope/blob/main/docs/contract_v1.md" target="_blank" rel="noopener">Capsule contract (v1)</a>
-            <a href="https://github.com/Epsilontic/veriscope/tree/main/docs/pilot" target="_blank" rel="noopener">Pilot kit</a>
-            <a href="https://github.com/Epsilontic/veriscope/blob/main/docs/calibration_protocol_v0.md" target="_blank" rel="noopener">Calibration protocol</a>
+            <a href="https://github.com/Epsilontic/veriscope" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href="https://github.com/Epsilontic/veriscope#quick-start" target="_blank" rel="noopener noreferrer">Quick Start</a>
+            <a href="https://github.com/Epsilontic/veriscope/blob/main/docs/contract_v1.md" target="_blank" rel="noopener noreferrer">Capsule contract (v1)</a>
+            <a href="https://github.com/Epsilontic/veriscope/tree/main/docs/pilot" target="_blank" rel="noopener noreferrer">Pilot kit</a>
+            <a href="https://github.com/Epsilontic/veriscope/blob/main/docs/calibration_protocol_v0.md" target="_blank" rel="noopener noreferrer">Calibration protocol</a>
           </div>
           <div class="footer-col">
             <h4>Contact</h4>
@@ -316,8 +345,8 @@
       </div>
 
       <div class="footer-bottom">
-        <span>© 2025 Epsilontic</span>
-        <span>AGPL-3.0 · Commercial licensing available</span>
+        <span>© 2026 Epsilontic</span>
+        <span>AGPL-3.0 + Commercial</span>
       </div>
     </footer>
   </body>
